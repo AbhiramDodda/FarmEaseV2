@@ -9,7 +9,7 @@ from models.models import user_datastore
 
 class appConfiguration():
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:abhi9@localhost:5432/FarmEase'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:<pass>@localhost:5432/FarmEase'
     SECURITY_PASSWORD_SALT = "12345"
     DEBUG = True
 
