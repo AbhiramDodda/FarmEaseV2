@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/static/css/lists.css" rel="stylesheet" />
+    <title>FarmEase</title>
+  </head>
+  <body>
+    <section>
+      <div>
+        <div>
+          <h2>FarmEase</h2>
+        </div>
+      </div>
+    </section>
+    {% if labs|length > 0 %}
+    <ul>
+      {% for lab in labs %}
+      <li>
+        <h3>{{ lab.labName }}</h3>
+        <h5>{{ lab.labAddress }}</h5>
+        <h5>{{ lab.labPhone }}</h5>
+        <button onclick="window.location.href='/{{ lab.labId }}/bookpage'">
+          Book
+        </button>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <h2>No labs are available at the moment. Please visit again.</h2>
+    {% endif %}
+  </body>
+</html>

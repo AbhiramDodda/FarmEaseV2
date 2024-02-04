@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ lab.labName }}</title>
+  </head>
+  <body>
+    <h2>{{ lab.labName }}</h2>
+    <br />
+
+    <form method="POST" enctype="multipart/form-data" action="/book">
+      <input type="hidden" value="{{ lab.labId }}" name="labid" />
+      <input type="hidden" value="{{ farmer.farmerId }}" name="farmerid" />
+      <input type="hidden" value="{{ farmer.farmerName }}" name="farmername" />
+      <input
+        type="hidden"
+        value="{{ farmer.farmerPhone }}"
+        name="farmerphone"
+      />
+      <input
+        type="hidden"
+        value="{{ farmer.farmerAddress }}"
+        name="farmeraddress"
+      />
+      <table>
+        <tr>
+          <td>Name</td>
+          <td>{{ farmer.farmerName }}</td>
+        </tr>
+        <tr>
+          <td>Phone</td>
+          <td>{{ farmer.farmerPhone }}</td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td>{{ farmer.farmerAddress }}</td>
+        </tr>
+      </table>
+      <br />
+      <label for="audio">Audio:</label>
+
+      <div id="audio-recording">
+        <button id="startRecord">Start Recording</button>
+        <button id="stopRecord" disabled>Stop Recording</button>
+        <audio controls id="audio-preview" style="display: none"></audio>
+      </div>
+      <table>
+        <tr>
+          <td><label for="text_data">Text Data:</label></td>
+          <td>
+            <textarea
+              name="problem"
+              id="text_data"
+              rows="4"
+              cols="50"
+            ></textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td><label for="image">Image:</label></td>
+          <td><input type="file" name="image" accept="image/*" /><br /></td>
+        </tr>
+        <input
+          type="file"
+          name="audioFile"
+          id="audioFile"
+          accept="audio/*"
+          style="display: none"
+        />
+
+        <tr>
+          <td><input type="submit" value="Book" /></td>
+        </tr>
+      </table>
+    </form>
+    <script src="/static/JS/audio.js"></script>
+  </body>
+</html>

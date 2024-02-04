@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/static/css/forms.css" rel="stylesheet" />
+    <title>Registration</title>
+    <style>
+      #regsubmit {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <h1>FarmEase</h1>
+      <br />
+      <div class="form-box">
+        <form action="/registration" method="POST">
+          <table>
+            <tr>
+              <td><label>Name</label></td>
+              <td><input type="text" name="name" /></td>
+            </tr>
+            <tr>
+              <td><label>Password</label></td>
+              <td><input type="text" name="password" /></td>
+            </tr>
+            <tr>
+              <td><label>Phone</label></td>
+              <td><input type="text" name="phone" /></td>
+            </tr>
+            <tr>
+              <td><label>Address</label></td>
+              <td><textarea rows="4" cols="30" name="address"></textarea></td>
+            </tr>
+            <tr>
+              <td><label>Email</label></td>
+              <td><input type="email" name="email" /></td>
+            </tr>
+            <tr>
+              <td colspan="2" align="center">
+                <input type="submit" value="Register" id="regsubmit" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </center>
+  </body>
+</html>

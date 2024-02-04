@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/static/css/lists.css" rel="stylesheet" />
+    <title>{{ lab.labName }}</title>
+    <style>
+      #bookli {
+        border: 3px solid #555;
+        border-radius: 5px;
+        width: 85%;
+        margin: 5px;
+        padding: 5px;
+      }
+      button {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div>
+        <div>
+          <h2>FarmEase</h2>
+        </div>
+        <div>
+          <a href="/logout">Logout</a>
+        </div>
+      </div>
+    </section>
+    {% if bookings|length > 0 %}
+    <ul>
+      {% for booking in bookings %}
+      <div id="bookli">
+        <li>
+          <div>
+            <table border="1">
+              <tr>
+                <td>Name</td>
+                <td>{{ booking.farmername }}</td>
+              </tr>
+              <tr>
+                <td>Phone</td>
+                <td>{{ booking.farmerphone }}</td>
+              </tr>
+              <tr>
+                <td>Address</td>
+                <td>{{ booking.farmeraddress }}</td>
+              </tr>
+            </table>
+          </div>
+          <h5>Problem:</h5>
+          <p>{{ booking.problem }}</p>
+          <img
+            src="{{ booking.image_path }}"
+            alt="Picture from farmer"
+            height="256"
+            width="256"
+          />
+          <h5>Expected disease of plant: {{ booking.new }}</h5>
+          <audio src="{{ booking.audioPath }}"></audio>
+          <button
+            onclick="window.location.href='/{{ booking.bookingId }}/delete'"
+          >
+            Delete
+          </button>
+        </li>
+      </div>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <h5>No bookings at present.</h5>
+    {% endif %}
+  </body>
+</html>

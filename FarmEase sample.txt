@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/static/css/dashboard.css" />
+
+    <title>Farmer Dashboard</title>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <h1 class="mb-4">Farmer Dashboard</h1>
+      <ul class="nav nav-tabs" id="featureTabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#marketplace"
+            >Marketplace</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#cropsList">Crops List</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-toggle="tab"
+            href="#lab"
+            onclick="fetchLabData()"
+            >Laboratory</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#learningVideos"
+            >Learning Videos</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#weatherAlerts"
+            >Weather Alerts</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#insuranceAlerts"
+            >Insurance Alerts</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#addCrops">Add Crops</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#storageAreas"
+            >Storage Areas</a
+          >
+        </li>
+      </ul>
+
+      <div class="tab-content mt-4">
+        <!-- Marketplace -->
+        <div class="tab-pane fade show active" id="marketplace">
+          <!-- Add your marketplace content here -->
+          <div class="container">
+            <h1>Market Place - Crop Details Entry</h1>
+            {% if not sellerstatus %}
+            <div class="container-fluid h-100">
+              <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-12 text-center">
+                  <h1>Do you want to be a seller?</h1>
+                  <p>
+                    Welcome to our marketplace where you can sell your products
+                    to customers.
+                  </p>
+                  <button
+                    class="btn btn-lg btn-primary"
+                    onclick="window.location.href='/sellerstatuschange'"
+                  >
+                    YES
+                  </button>
+                  <button class="btn btn-lg btn-secondary">NO</button>
+                </div>
+              </div>
+            </div>
+
+            {% else %}
+            <form id="cropForm" method="POST" action="/addToMarket">
+              <div class="form-group">
+                <label for="selectedCrop">Select Your Crop</label>
+                <select
+                  class="form-control"
+                  id="selectedCrop"
+                  name="selectedCrop"
+                >
+                  <option value="wheat">Wheat</option>
+                  <option value="corn">Corn</option>
+                  <option value="sugarcane">Sugarcane</option>
+                  <option value="paddy">Paddy</option>
+                  <!-- Add more crop options as needed -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="price">Price - per kg</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="price"
+                  placeholder="Enter price"
+                  name="price"
+                />
+              </div>
+              <div class="form-group">
+                <label for="units">Units (kgs)</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="units"
+                  placeholder="Enter units"
+                  name="units"
+                />
+              </div>
+              <label for="organic">Organic or not?</label>
+              <select class="form-control" id="organic" name="organic">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+              <!-- Add a hidden input field to store the selected crop -->
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% endif %}
+          </div>
+          <!-- Add your marketplace form and listings here -->
+        </div>
+
+        <!-- Crops List -->
+        <div class="tab-pane fade" id="cropsList">
+          <!-- Add your crops list content here -->
+          <div class="container">
+            <h1>Crops List</h1>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Crop Name</th>
+                  <th>Price/kg</th>
+                  <th>Units(in kgs)</th>
+                  <th>Sold</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="crop-list">
+                <div id="dataContainer"></div>
+              </tbody>
+            </table>
+          </div>
+          <!-- Add your crops listing table or content here -->
+        </div>
+
+        <!-- Laboratory -->
+        <div class="tab-pane fade" id="lab">
+          <!-- Add your laboratory content here -->
+          <div class="container">
+            <h1>Laboratories</h1>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="searchInput"
+                  placeholder="Search Labs"
+                />
+              </div>
+            </div>
+
+            <div class="row" id="lab-container">
+              <!-- Lab cards will be added dynamically through JavaScript -->
+            </div>
+          </div>
+          <!-- Add your laboratory booking and common research content here -->
+        </div>
+
+        <div
+          class="container mt-5"
+          id="booking-container"
+          style="display: none"
+        >
+          <button type="button" class="btn btn-primary" id="backButton">
+            Back
+          </button>
+          <h2 style="text-align: center">Service Booking Form</h2>
+          <h5 style="text-align: center" class="lab-name">AKASH YERRA</h5>
+          <form id="bookingForm">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="location">Location:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="location"
+                placeholder="Enter your location"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="problemDescription">Problem Description:</label>
+              <textarea
+                class="form-control"
+                id="problemDescription"
+                rows="3"
+                placeholder="Describe the problem"
+                required
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="audio">Audio:</label>
+              <br />
+              <div class="btn-group">
+                <button id="startRecording">Start</button>
+                <button id="stopRecording" disabled>Stop</button>
+                <button id="playRecording" disabled>Play</button>
+                <audio id="audioPlayer" controls></audio>
+              </div>
+              <input
+                type="file"
+                accept="audio/*"
+                class="form-control-file"
+                id="audio"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="fileUpload">Upload or Take a Picture:</label>
+              <div class="custom-file">
+                <!-- Use the capture attribute to access the device's camera -->
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="fileUpload"
+                  accept="image/*"
+                  capture="camera"
+                  style="display: none"
+                />
+                <label class="custom-file-label" for="fileUpload"
+                  >Choose file</label
+                >
+              </div>
+              <button id="takePicture" class="btn btn-primary">
+                Take a Picture
+              </button>
+            </div>
+
+            <div>
+              <!-- Display the camera stream here -->
+              <video id="cameraStream" style="display: none"></video>
+              <canvas id="capturedImage" style="display: none"></canvas>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="bookService()"
+            >
+              Book
+            </button>
+          </form>
+        </div>
+
+        <!-- Learning Videos -->
+        <div class="tab-pane fade" id="learningVideos">
+          <!-- Add your learning videos content here -->
+          <form>
+            <div class="container">
+              <h1>Learning Videos</h1>
+              <p>Select a crop to get related videos:</p>
+              <select class="form-control" id="cropSelect">
+                <option>Select a Crop</option>
+                <option>Wheat</option>
+                <option>Corn</option>
+                <!-- Add more crop options as needed -->
+              </select>
+              <select class="form-control" id="conditionsSelect">
+                <option>Select a Growing Conditions</option>
+                <option>Summer Season</option>
+                <option>Raining Season</option>
+                <!-- Add more crop options as needed -->
+              </select>
+              <select class="form-control" id="fertilizerSelect">
+                <option>Select a Fertilizer</option>
+                <option>Organic</option>
+                <option>Inorganic</option>
+                <!-- Add more crop options as needed -->
+              </select>
+              <select class="form-control" id="languageSelect">
+                <option>Select a Language</option>
+                <option>Telugu</option>
+                <option>Hindi</option>
+                <!-- Add more crop options as needed -->
+              </select>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Additional Details"
+              />
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="generateVideos();"
+              >
+                Generate
+              </button>
+            </div>
+          </form>
+          <div class="container mt-4">
+            <div class="row" id="videoList">
+              <!-- Video thumbnails and titles will be dynamically added here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Weather Alerts -->
+        <div class="tab-pane fade" id="weatherAlerts">
+          <!-- Add your weather alerts content here -->
+          <div class="container">
+            <h1>Weather Alerts</h1>
+            <h3>Current Location Name</h3>
+            <p id="location"></p>
+            <form>
+              <label for="city">Enter City:</label>
+              <input type="text" id="city" placeholder="Enter city name" />
+              <button type="button" onclick="getWeather()">Get Weather</button>
+            </form>
+
+            <div id="weatherInfo">
+              <!-- Weather information will be displayed here -->
+            </div>
+            <!-- Add weather alert content here -->
+          </div>
+
+          <!-- Add your weather alert system here -->
+        </div>
+
+        <!-- Insurance Alerts -->
+        <div class="tab-pane fade" id="insuranceAlerts">
+          <!-- Add your insurance alerts content here -->
+          <div class="container">
+            <h1>Insurance Alerts</h1>
+            <form id="insuranceForm">
+              <div class="form-group">
+                <label for="insuranceDate">Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="insuranceDate"
+                  placeholder="Enter date"
+                />
+              </div>
+              <div class="form-group">
+                <label for="insuranceTime">Time</label>
+                <input
+                  type="time"
+                  class="form-control"
+                  id="insuranceTime"
+                  placeholder="Enter time"
+                />
+              </div>
+              <div class="form-group">
+                <label for="insuranceAmount">Amount</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="insuranceAmount"
+                  placeholder="Enter amount"
+                />
+              </div>
+              <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phoneNumber"
+                  placeholder="Enter phone number"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Add Insurance
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Add Crops -->
+        <div class="tab-pane fade" id="addCrops">
+          <!-- Add your add crops content here -->
+          <div class="container">
+            <h1>Add Crops</h1>
+            <form method="POST" action="/addcrop">
+              <div class="form-group">
+                <label for="selectCrop">Select your crop</label>
+                <select
+                  class="form-control"
+                  id="cropSelect"
+                  id="selectCrop"
+                  name="crop"
+                >
+                  <option>Select a crop</option>
+                  <option value="wheat">Wheat</option>
+                  <option value="corn">Corn</option>
+                  <option value="rice">Rice/Paddy</option>
+                  <option value="tea">Tea</option>
+                  <option value="sugarcane">Sugarcane</option>
+                  <option value="tomato">Tomato</option>
+                  <!-- Add more crop options as needed -->
+                </select>
+              </div>
+              <!-- Add fields for planting date, recommendations, etc. -->
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+
+          <!-- Add your crop selection and recommendation system here -->
+          {% if check %}
+          <div>
+            <ul>
+              {% for crop in crops %}
+              <li>
+                <div>
+                  <table>
+                    <tr>
+                      <td>Crop name:</td>
+                      <td>{{ crop }}</td>
+                    </tr>
+                    <tr>
+                      <td>Prime locations:</td>
+                      <td>{{ crops[crop].primeloc }}</td>
+                    </tr>
+                    <tr>
+                      <td>Current price:</td>
+                      <td>{{ crops[crop].current }}</td>
+                    </tr>
+                    <tr>
+                      <td>Min cost:</td>
+                      <td>{{ crops[crop].prevmon }}</td>
+                    </tr>
+                    <tr>
+                      <td>Max cost:</td>
+                      <td>{{ crops[crop].nextmon }}</td>
+                    </tr>
+                  </table>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% else %}
+          <h4>Add crops for forecastings.</h4>
+          {% endif %}
+          <div>
+            <h3>Here are some forecatings of crops over the next year.</h3>
+          </div>
+        </div>
+
+        <!-- Storage Areas -->
+        <div class="tab-pane fade" id="storageAreas">
+          <!-- Add your storage areas content here -->
+          <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          />
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+          <script defer src="/static/js/audio.js"></script>
+          <!-- Add your map and nearby storage areas here -->
+        </div>
+      </div>
+    </div>
+
+    <script defer src="/static/js/dashboard.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

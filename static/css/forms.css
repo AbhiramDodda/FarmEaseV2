@@ -1,0 +1,17 @@
+input[type="text"] {
+  box-sizing: border-box;
+  width: 75%;
+  margin: 8px 0;
+}
+input[type="text"]:focus {
+  border: 3px solid #555;
+}
+.form-box {
+  border: 3px solid #555;
+  border-radius: 10px;
+  background-color: rbg(255, 228, 196, 0.5);
+  width: 50%;
+}
+button {
+  margin: 10px;
+}
