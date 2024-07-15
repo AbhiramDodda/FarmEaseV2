@@ -1,6 +1,4 @@
-<h1 align = "center">
-  <img src="https://i.imgur.com/HQmG6Nz.png">
-</h1>
+<center><h1>FarmEase</h1></center>
 
 # Table of Contents
 - [Introduction](#introduction) <br>
